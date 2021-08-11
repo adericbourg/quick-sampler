@@ -4,12 +4,12 @@ import sys
 from ui.appgui import AppGui
 
 
-def main():
+def main(args):
     print("Running application")
-    gui = AppGui(sys.argv)
-    res = gui.show()
+    gui = AppGui(args)
+    res = gui.run()
     sys.exit(res)
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv)
