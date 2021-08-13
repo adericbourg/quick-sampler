@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QMainWindow, QApplication, QFileDialog, QPushButton, QTextEdit, QVBoxLayout, QWidget
 
-from app.core import player
+from app.core import player, fs
 
 
 class AppGui:
@@ -44,8 +44,10 @@ class MainWindow(QMainWindow):
         self.show()
 
     def open_file(self):
-        path, _ = QFileDialog.getOpenFileName(self, 'Open file')
-        self.file_name.setText(path)
+        path = QFileDialog.getExistingDirectory(self, "Open samples directory")
+        files = fs.list_files(path)
+        text = "".join(f"{file.relative_parent_directory}/{file.name}\n" for file in files)
+        self.file_name.setText(text)
 
     def play(self):
         file = self.file_name.toPlainText()
