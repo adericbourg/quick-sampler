@@ -71,7 +71,3 @@ class MainWindow(QMainWindow):
             if mapping.key in self.keyboard_keys:
                 button = self.keyboard_keys[mapping.key]
                 button.setText(f"{mapping.key}\n{mapping.file.name}")
-
-    def play(self):
-        file = self.file_name.toPlainText()
-        self.player.play(file)
