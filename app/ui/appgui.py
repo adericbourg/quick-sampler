@@ -4,6 +4,7 @@ from app.core import player, fs
 from PyQt6 import Qt, QtGui
 from app.core import registry
 
+
 class AppGui:
 
     def __init__(self, args) -> None:
@@ -43,16 +44,16 @@ class MainWindow(QMainWindow):
         self.show()
 
     def keyPressEvent(self, event: QtGui.QKeyEvent) -> None:
-        print(event.key())
+        sample = registry.get(event.key())
+        print(f"Caught {event.key()}")
+        if sample is not None:
+            print(f"Playing {sample}")
+            self.player.play(sample)
 
     def open_file(self):
         path = QFileDialog.getExistingDirectory(self, "Open samples directory")
         files = fs.list_files(path)
-        mapping = registry.register(files)
-        for m in mapping:
-            print(m)
-            self.player.play(f"{m.file.parent_directory}/{m.file.name}")
-        # text = "".join(f"{file.relative_parent_directory}/{file.name}\n" for file in files)
+        registry.register(files)
 
     def play(self):
         file = self.file_name.toPlainText()

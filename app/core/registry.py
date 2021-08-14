@@ -1,4 +1,4 @@
-from typing import Sequence, TypedDict, Dict
+from typing import Sequence, Optional, Dict
 
 from app.core.fs import AudioFile
 from dataclasses import dataclass
@@ -22,3 +22,9 @@ def register(files: Sequence[AudioFile]) -> Sequence[FileMapping]:
             break
         __registry[ascii_code] = file
     return [FileMapping(file=file, key=ascii_code) for (ascii_code, file) in __registry.items()]
+
+
+def get(key: int) -> Optional[AudioFile]:
+    if key in __registry:
+        return __registry[key]
+    return None
