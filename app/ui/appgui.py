@@ -1,7 +1,8 @@
 from PyQt6.QtWidgets import QMainWindow, QApplication, QFileDialog, QPushButton, QTextEdit, QVBoxLayout, QWidget
 
 from app.core import player, fs
-
+from PyQt6 import Qt, QtGui
+from app.core import registry
 
 class AppGui:
 
@@ -23,14 +24,12 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.player = player.Player()
+
         # Play sound
         layout = QVBoxLayout()
         central_widget = QWidget()
         central_widget.setLayout(layout)
-
-        file_name = QTextEdit()
-        self.file_name = file_name
-        layout.addWidget(file_name)
 
         open_file_dialog_button = QPushButton("Select file...")
         open_file_dialog_button.clicked.connect(self.open_file)
@@ -43,12 +42,18 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(central_widget)
         self.show()
 
+    def keyPressEvent(self, event: QtGui.QKeyEvent) -> None:
+        print(event.key())
+
     def open_file(self):
         path = QFileDialog.getExistingDirectory(self, "Open samples directory")
         files = fs.list_files(path)
-        text = "".join(f"{file.relative_parent_directory}/{file.name}\n" for file in files)
-        self.file_name.setText(text)
+        mapping = registry.register(files)
+        for m in mapping:
+            print(m)
+            self.player.play(f"{m.file.parent_directory}/{m.file.name}")
+        # text = "".join(f"{file.relative_parent_directory}/{file.name}\n" for file in files)
 
     def play(self):
         file = self.file_name.toPlainText()
-        player.Player().play(file)
+        self.player.play(file)
