@@ -9,6 +9,8 @@ fi
 
 source ${VIRTUALENV_DIR}/bin/activate
 
+pip install --upgrade pip
+
 if [[ -f "requirements.txt" ]]; then
     echo "Installing dependencies"
     pip install --upgrade -r requirements.txt
