@@ -1,8 +1,8 @@
-from PyQt6.QtWidgets import QMainWindow, QApplication, QFileDialog, QPushButton, QTextEdit, QVBoxLayout, QWidget
+from PyQt6 import QtGui
+from PyQt6.QtWidgets import QMainWindow, QApplication, QFileDialog, QPushButton, QVBoxLayout, QWidget
 
 from app.core import player, fs
-from PyQt6 import Qt, QtGui
-from app.core import registry
+from app.core import registry, KeyboardLayout
 
 
 class AppGui:
@@ -28,17 +28,17 @@ class MainWindow(QMainWindow):
         self.player = player.Player()
 
         # Play sound
-        layout = QVBoxLayout()
+        vertical_layout = QVBoxLayout()
         central_widget = QWidget()
-        central_widget.setLayout(layout)
+        central_widget.setLayout(vertical_layout)
 
         open_file_dialog_button = QPushButton("Select file...")
         open_file_dialog_button.clicked.connect(self.open_file)
-        layout.addWidget(open_file_dialog_button)
+        vertical_layout.addWidget(open_file_dialog_button)
 
         play_button = QPushButton("Play!")
         play_button.clicked.connect(self.play)
-        layout.addWidget(play_button)
+        vertical_layout.addWidget(play_button)
 
         self.setCentralWidget(central_widget)
         self.show()
@@ -53,7 +53,7 @@ class MainWindow(QMainWindow):
     def open_file(self):
         path = QFileDialog.getExistingDirectory(self, "Open samples directory")
         files = fs.list_files(path)
-        registry.register(files)
+        registry.register(files, KeyboardLayout.QWERTY.as_namespace())
 
     def play(self):
         file = self.file_name.toPlainText()

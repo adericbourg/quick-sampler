@@ -1,10 +1,7 @@
+from dataclasses import dataclass
 from typing import Sequence, Optional, Dict
 
 from app.core.fs import AudioFile
-from dataclasses import dataclass
-
-# a-z + 0-9
-ASCII_CODES = list(range(65, 90 + 1)) + list(range(48, 57 + 1))
 
 
 @dataclass
@@ -16,12 +13,14 @@ class FileMapping:
 __registry: Dict[int, AudioFile] = dict()
 
 
-def register(files: Sequence[AudioFile]) -> Sequence[FileMapping]:
-    for file, ascii_code in zip(files, ASCII_CODES):
-        if file is None or ascii_code is None:
+def register(files: Sequence[AudioFile], namespace: Sequence[int]) -> Sequence[FileMapping]:
+    if len(namespace) < len(files):
+        print("WARNING: namespace smaller than files to map")
+    for file, code in zip(files, namespace):
+        if file is None or code is None:
             break
-        __registry[ascii_code] = file
-    return [FileMapping(file=file, key=ascii_code) for (ascii_code, file) in __registry.items()]
+        __registry[code] = file
+    return [FileMapping(file=file, key=code) for (code, file) in __registry.items()]
 
 
 def get(key: int) -> Optional[AudioFile]:
