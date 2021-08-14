@@ -8,7 +8,7 @@ class Layout:
     keys: Sequence[Sequence[chr]]
 
     def as_namespace(self) -> Sequence[int]:
-        return [ord(char.upper())
+        return [char
                 for line in self.keys
                 for char in line]
 
@@ -16,8 +16,8 @@ class Layout:
 QWERTY = Layout(
     name="qwerty",
     keys=[
-        ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
-        ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
-        ['z', 'x', 'c', 'v', 'b', 'n', 'm']
+        ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+        ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+        ['Z', 'X', 'C', 'V', 'B', 'N', 'M']
     ]
 )
